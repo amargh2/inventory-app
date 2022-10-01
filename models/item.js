@@ -7,7 +7,7 @@ const ItemSchema = new Schema ({
   price: {type: Number, min: .01},
   description: String,
   number_in_stock: Number,
-  category: String
+  category: {type: Schema.Types.ObjectId, ref:'Category'}
 })
 
 ItemSchema
@@ -15,3 +15,5 @@ ItemSchema
   .get(function() {
     return `/catalog/item/${this._id}`
   })
+
+module.exports = mongoose.model('Item', ItemSchema)
