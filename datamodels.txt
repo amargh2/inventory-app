@@ -1,0 +1,10 @@
+Needed Models:
+
+item model:
+{name: string
+type: string
+price: integer
+number-in-stock: integer
+URL: (a virtual)}
+
+item type
