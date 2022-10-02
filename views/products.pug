@@ -9,6 +9,8 @@ block content
       a(href='/products') Our Products
       a(href='/categories') Browse Categories
     div(class='col d-flex flex-column justify-content-center')  
-      p Products in the Store: !{data.item_count}
-      p Categories: !{data.category_count}
+      p Products in the Store:
+      ul 
+        each item in item_list
+          li= item
     div(class='col')
