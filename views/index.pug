@@ -1,14 +1,8 @@
 extends layout
 
 block content
-  div(class='d-flex justify-content-center')  
-    h1(class='')= title
-  div(class='row p-3')
-  div(class='row')
-    div(class='col d-flex flex-column')
-      a(href='/products') Our Products
-      a(href='/categories') Browse Categories
+  div(class='d-flex justify-content-center offset-md-4')  
     div(class='col d-flex flex-column justify-content-center')  
-      p Products in the Store: !{data.item_count}
+      p 
+        a(href='/catalog/products') Products in the Store: !{data.item_count}
       p Categories: !{data.category_count}
-    div(class='col')

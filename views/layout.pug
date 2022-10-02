@@ -4,5 +4,21 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    body
+    div(class='d-flex justify-content-center pb-3')
+      h1 !{title}
+    div(class='container-fluid')
+      div(class='row')
+        div(class='col-sm-2')
+          block sidebar
+            ul(class='sidebar-nav')
+              li 
+                a(href='/catalog') Home
+              li 
+                a(href='/catalog/products') Our Products
+              li 
+                a(href='/catalog/categories/') Browse By Category 
+              
+                
+        div(class='col-sm-10')
+          block content

@@ -8,6 +8,17 @@ router.get("/", itemController.index);
 //GET products list page
 router.get('/products', itemController.itemList)
 
+router.get('/test', itemController.test)
+
+//GET specific item page
+router.get('/products/:id', itemController.itemDetail)
+
+//GET list of categories
+router.get('/categories', itemController.listCategories)
+
+// GET list of items by category
+router.get('/categories/:id', itemController.categoryItems)
+
 /* // GET request for creating a Book. NOTE This must come before routes that display Book (uses id).
 router.get("/book/create", book_controller.book_create_get);
 
