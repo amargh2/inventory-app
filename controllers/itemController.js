@@ -69,15 +69,29 @@ exports.listCategories = async function(req, res, next) {
   }
 }
 
+//GET items by provided category
 exports.categoryItems = async function(req, res, next) {
   try {
     const id = req.params.id;
     const oId = new ObjectId(id)
     const items = await Item.find({category: oId})
       .populate('category')
-    res.render('category_items_list', {title:'Items In This Category', items:items})
-    //res.render('category_items_list', {title: 'Items in This Category', items: items})
+    res.render('category_items_list', {title: `${items[0].category.name}`, items:items})
   } catch (err) {
     next(err)
   }
+}
+
+//GET item detail
+exports.itemDetail = async function(req, res, next) {
+  try {
+    const id = req.params.id;
+  const oId = new ObjectId(id)
+  const item = await Item.findById(oId)
+    .populate('category')
+  res.render('item_detail', {title: 'Product Details for ' + item.name, item_details:item})
+  } catch (err) {
+    next(err)
+  }
+  
 }

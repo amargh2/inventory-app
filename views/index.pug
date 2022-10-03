@@ -1,8 +1,9 @@
 extends layout
 
 block content
-  div(class='d-flex justify-content-center offset-md-4')  
+  div(class='d-flex justify-content-center')  
     div(class='col d-flex flex-column justify-content-center')  
       p 
         a(href='/catalog/products') Products in the Store: !{data.item_count}
-      p Categories: !{data.category_count}
+      p 
+        a(href='/catalog/categories') Categories: !{data.category_count}

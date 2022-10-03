@@ -1,7 +1,8 @@
 extends layout 
 
 block content 
-  ul
+  div(class='d-flex flex-column')
     each item in items
-      li= item.name + ' ' + item.price
+      div(class='d-flex flex-column') 
+        a(href=`${item.url}`)= item.name + ' ' + item.price
   
