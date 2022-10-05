@@ -8,7 +8,11 @@ router.get("/", itemController.index);
 //GET products list page
 router.get('/products', itemController.itemList)
 
-router.get('/test', itemController.test)
+// GET request for creating a Book. NOTE This must come before routes that display Book (uses id).
+router.get("/products/create", itemController.createItemGET);
+
+//POST request to create an item
+router.post('/products/create', itemController.createItemPOST)
 
 //GET specific item page
 router.get('/products/:id', itemController.itemDetail)
@@ -19,9 +23,8 @@ router.get('/categories', itemController.listCategories)
 // GET list of items by category
 router.get('/categories/:id', itemController.categoryItems)
 
-/* // GET request for creating a Book. NOTE This must come before routes that display Book (uses id).
-router.get("/book/create", book_controller.book_create_get);
 
+/*
 // POST request for creating Book.
 router.post("/book/create", book_controller.book_create_post);
 

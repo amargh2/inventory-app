@@ -2,6 +2,7 @@ var Item = require('../models/item');
 var Category = require('../models/category');
 const {body, validationResult} = require('express-validator');
 var async = require('async');
+const { find } = require('../models/item');
 const ObjectId = require('mongoose').Types.ObjectId
 
 exports.index = function (req, res) {
@@ -38,27 +39,7 @@ exports.itemList = function(req, res) {
   );
 };
 
-exports.test = function(req, res) {
-  res.render('test', {title: 'Uhh'})
-}
-
-exports.getItem2 = function(req, res) {
-    Item.findById(req.params.id)
-    .populate('category')
-    .exec()
-}
-
-exports.itemDetail = async function(req, res, next) {
-    try {
-      const item = await Item.findById(req.params.id).exec()
-      res.render('item_detail', {item_details: item})
-    }
-    catch (err) {
-      next(err)
-    }
-    
-};
-
+//GET category list page
 exports.listCategories = async function(req, res, next) {
   try {
     const categories = await Category.find({})
@@ -69,12 +50,11 @@ exports.listCategories = async function(req, res, next) {
   }
 }
 
-//GET items by provided category
+//GET items by user clicked category
 exports.categoryItems = async function(req, res, next) {
   try {
     const id = req.params.id;
-    const oId = new ObjectId(id)
-    const items = await Item.find({category: oId})
+    const items = await Item.find({category: id})
       .populate('category')
     res.render('category_items_list', {title: `${items[0].category.name}`, items:items})
   } catch (err) {
@@ -83,15 +63,109 @@ exports.categoryItems = async function(req, res, next) {
 }
 
 //GET item detail
-exports.itemDetail = async function(req, res, next) {
+exports.itemDetail =async function(req, res, next) {
   try {
-    const id = req.params.id;
-  const oId = new ObjectId(id)
-  const item = await Item.findById(oId)
+  const id = req.params.id;
+  const item = await Item.findById(id)
     .populate('category')
-  res.render('item_detail', {title: 'Product Details for ' + item.name, item_details:item})
+  res.render('item_detail', {title: 'Product Details', item_details:item})
   } catch (err) {
     next(err)
   }
-  
 }
+
+exports.createItemGET = async function (req, res, next) {
+  try {
+    var categories = await Category.find({})
+    res.render('create_item', {title:'Add an Item', categories:categories});
+  } catch (err) {
+    next(err)
+  }
+}
+
+exports.createItemPOST = async function (req, res, next) {
+
+    body("name", "Nitle must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("description", "Description must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("price", "Price must be a valid integer.")
+    .trim()
+    .isLength({ min: 1 })
+    .isInt()
+    .escape(),
+  body("number_in_stock", "Must be a valid integer.").trim().isLength({ min:1}).escape(),
+  body("category").escape()
+  const category = await Category.find({name: req.body.category}, 'id')
+    var item = new Item ({
+      name: req.body.name,
+      description: req.body.description,
+      price: parseInt(req.body.price),
+      number_in_stock: req.body.number_in_stock,
+      category: category[0]
+    })
+  
+  item.save(function (err) {
+    if (err) {
+      next(err)
+    } else {
+      res.redirect(item.url)
+    }
+  })
+}
+
+exports.createItemPOST2 = async function (req, res, next) {
+  // Validate and sanitize fields.
+  body("name", "Name must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("description", "Description must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("price", "Price must be a valid integer.")
+    .trim()
+    .isLength({ min: 1 })
+    .isInt()
+    .escape(),
+  body("number_in_stock", "Must be a valid integer.").trim().isLength({ min:1}).escape(),
+  body("category").escape(),
+  next()
+  // Process request after validation and sanitization.
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a Book object with escaped and trimmed data.
+    var item = new Item({
+      title: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      number_in_stock: parseInt(req.body.number_in_stock),
+      category: req.body.category._id,
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+
+      // Get all authors and genres for form.
+      res.render("create_item", {
+        title: "Add an Item",
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      // Data from form is valid. Save book.
+      item.save(function (err) {
+        if (err) {
+          return next(err);
+        }
+        // Successful - redirect to new book record.
+        res.redirect(item.url);
+      });
+    }
+  }
