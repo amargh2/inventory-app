@@ -51,13 +51,13 @@ exports.listCategories = async function(req, res, next) {
   }
 }
 
-//GET items by user clicked category
-exports.categoryItems = async function(req, res, next) {
+//GET items by user clicked category and list category details
+exports.categoryDetails = async function(req, res, next) {
   try {
     const id = req.params.id;
     const items = await Item.find({category: id})
     const category = await Category.findById(id)
-    res.render('category_items_list', {title: `${category.name}`, items:items})
+    res.render('category_items_list', {title: `${category.name}`, items:items, category:category})
   } catch (err) {
     next(err)
   }
@@ -253,4 +253,29 @@ exports.createItemPOST2 = async function (req, res, next) {
       next(error)
     }
     
+  }
+
+  exports.deleteCategoryGET = async function(req, res, next) {
+    try {
+      const category = await Category.findById(req.params.id)
+      const items = await Item.find({category: req.params.id}) 
+      if (items[0] === undefined) {
+        res.render('delete_category', {title: 'Delete Category', category:category})
+      }
+      else {
+        res.render('delete_category', {title: 'Delete Category', category:category, items:items})
+      }
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  exports.deleteCategoryPOST = async function(req, res, next) {
+    try {
+      await Category.findByIdAndDelete(req.params.id);
+      const categories = await Category.find({});
+      res.render('categories', {title:'Categories', categories_list:categories})
+    } catch (error) {
+      next(error)
+    }
   }

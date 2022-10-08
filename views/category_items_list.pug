@@ -1,7 +1,13 @@
 extends layout 
 
 block content 
-  div(class='d-flex flex-column')
-    each item in items
-      div(class='d-flex flex-column') 
-        a(href=`${item.url}`)= item.name + ' ' + item.price
+  p #[strong Category:] 
+    a(href=category.url) #{category.name}
+  p #[strong Description:] #{category.description}
+  if items
+    ul 
+      each item in items 
+        li 
+          a(href=item.url)=item.name
+  a(href=category.url + '/delete')
+    button.btn.btn-primary Delete This Category

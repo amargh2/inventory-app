@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  
+  p #[strong Category:] 
+    a(href=category.url) #{category.name}
+  p #[strong Description:] #{category.description}
+  if items
+    ul 
+      each item in items 
+        li 
+          a(href=item.url)=item.name
+    p You must delete these before you can delete this category.
+  else
+    p Are you sure you would like to delete this category?
+      form(method='POST', action='')
+        div.d-flex.form-group  
+          div
+            button.btn.btn-primary(type='submit') Yes
+          div
+            a(href='/catalog/categories')
+              button.btn.btn-primary No
+    
+    
