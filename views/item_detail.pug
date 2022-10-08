@@ -3,3 +3,7 @@ extends layout
 block content 
   h1 !{item_details.name}
   p=`${item_details.description}`
+  div.d-flex.gap-2
+    a(href=item_details.url + '/delete')
+      button.btn.btn-primary Delete This Item
+    button.btn.btn-primary Edit This Item

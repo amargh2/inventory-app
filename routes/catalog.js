@@ -17,12 +17,21 @@ router.post('/products/create', itemController.createItemPOST)
 //GET specific item page
 router.get('/products/:id', itemController.itemDetail)
 
+//GET category add form
+router.get('/categories/create', itemController.categoryCreateGET)
+
+//POST category add form
+router.post('/categories/create', itemController.categoryCreatePOST)
+
 //GET list of categories
 router.get('/categories', itemController.listCategories)
 
 // GET list of items by category
 router.get('/categories/:id', itemController.categoryItems)
 
+router.get('/products/:id/delete', itemController.deleteItemGET)
+
+router.post('/products/:id/delete', itemController.deleteItemPOST)
 
 /*
 // POST request for creating Book.

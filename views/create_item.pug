@@ -4,16 +4,16 @@ block content
   form(method='POST' action='')
     div.form-group
       label(for='name') Name:
-      input#name.form-control(type='text', placeholder='Name of item' name='name' required='true' )
+      input#name.form-control(type='text' value=(undefined === item ? '' : item.name) placeholder='Name of item' name='name' required='true' )
     div.form-group
       label(for='description') Item Description:
-      input#description.form-control(type='textarea', placeholder='Description' name='description' required='true')
+      input#description.form-control(type='textarea' value=(undefined === item ? '' : item.description) placeholder='Description' name='description' required='true')
     div.form-group
       label(for='price') Item Price:
-      input#price.form-control(type='text', placeholder='Price' name='price' required='true') 
+      input#price.form-control(type='text', placeholder='Price' name='price' required='true' value=(undefined === item ? '' : item.price)) 
     .form-group 
       label(for ='category') Choose item category: 
-      select#category.form-control(type='select', placeHolder ='category', name ='category')
+      select#category.form-control(type='select', placeHolder ='category', name ='category' value=(undefined === item ? '' : item.category.name))
           each category in categories
             option= category.name
     .form-group 

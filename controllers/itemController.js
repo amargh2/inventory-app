@@ -3,6 +3,7 @@ var Category = require('../models/category');
 const {body, validationResult} = require('express-validator');
 var async = require('async');
 const { find } = require('../models/item');
+const item = require('../models/item');
 const ObjectId = require('mongoose').Types.ObjectId
 
 exports.index = function (req, res) {
@@ -55,8 +56,8 @@ exports.categoryItems = async function(req, res, next) {
   try {
     const id = req.params.id;
     const items = await Item.find({category: id})
-      .populate('category')
-    res.render('category_items_list', {title: `${items[0].category.name}`, items:items})
+    const category = await Category.findById(id)
+    res.render('category_items_list', {title: `${category.name}`, items:items})
   } catch (err) {
     next(err)
   }
@@ -85,7 +86,7 @@ exports.createItemGET = async function (req, res, next) {
 
 exports.createItemPOST = async function (req, res, next) {
 
-    body("name", "Nitle must not be empty.")
+  body("name", "Nitle must not be empty.")
     .trim()
     .isLength({ min: 1 })
     .escape(),
@@ -99,13 +100,23 @@ exports.createItemPOST = async function (req, res, next) {
     .isInt()
     .escape(),
   body("number_in_stock", "Must be a valid integer.").trim().isLength({ min:1}).escape(),
-  body("category").escape()
+  body("category").escape(),
+  (req, res) => {
+    const errors=validationResult(req)
+    if (!errors.isEmpty()) {
+      res.render('create_item', {
+        title:'Add an Item',
+        errors:errors,
+      })
+    }
+  }
+  
   const category = await Category.find({name: req.body.category}, 'id')
     var item = new Item ({
       name: req.body.name,
       description: req.body.description,
       price: parseInt(req.body.price),
-      number_in_stock: req.body.number_in_stock,
+      number_in_stock: parseInt(req.body.number_in_stock),
       category: category[0]
     })
   
@@ -131,8 +142,8 @@ exports.createItemPOST2 = async function (req, res, next) {
   body("price", "Price must be a valid integer.")
     .trim()
     .isLength({ min: 1 })
-    .isInt()
-    .escape(),
+    .isEmail()
+    .escape()
   body("number_in_stock", "Must be a valid integer.").trim().isLength({ min:1}).escape(),
   body("category").escape(),
   next()
@@ -144,7 +155,7 @@ exports.createItemPOST2 = async function (req, res, next) {
     var item = new Item({
       title: req.body.name,
       description: req.body.description,
-      price: req.body.price,
+      price: parseInt(req.body.price),
       number_in_stock: parseInt(req.body.number_in_stock),
       category: req.body.category._id,
     });
@@ -168,4 +179,78 @@ exports.createItemPOST2 = async function (req, res, next) {
         res.redirect(item.url);
       });
     }
+  }
+
+  exports.categoryCreateGET = function (req, res, next) {
+    res.render('create_category', {title: 'Add a New Category'})
+  }
+
+  exports.categoryCreatePOST = async function(req, res, next) {
+    try {
+      body('name', 'Name must not be empty.')
+        .trim()
+        .isLength({min: 1})
+        .escape()
+      body('description', 'Description must not be empty.')
+        .trim()
+        .isLength({min: 1})
+        .escape()
+      const errors = validationResult(req)
+      //check for errors, if errors return to the form with populated fields
+      // else create and save the new category
+      if (!errors.isEmpty()) {
+        res.render('create_category')
+      } else {
+        const category = new Category({
+          name: req.body.name,
+          description: req.body.description
+        })
+        category.save()
+        const categories = await Category.find({}).sort({name:1})
+        res.render('categories', {title:'Categories', categories_list: categories})
+      }
+
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  exports.deleteItemGET = async function(req, res, next) {
+    
+    try {
+      const itemForDeletion = await Item.findById(req.params.id)
+      res.render('delete_item', {title: `Delete ${itemForDeletion.name}?`, 
+      item: itemForDeletion})
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  exports.deleteItemPOST = async function(req, res, next) {
+    try {
+      async.parallel (
+        {
+          delete_item: function(callback) {
+            Item.deleteOne({_id:req.params.id}, callback)
+          },
+          item_count: function(callback) {
+            Item.countDocuments({}, callback)
+          },
+          category_count: function(callback) {
+            Category.countDocuments({}, callback)
+          }
+        },
+      
+        function (err, results) {
+          res.render('index', {
+            title: 'Welcome to the Shop',
+            error: err,
+            data: results
+          })
+        }
+      )
+    } catch (error) {
+      next(error)
+    }
+    
   }
