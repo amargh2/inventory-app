@@ -1,8 +1,9 @@
 extends layout
 
 block content
-  div(class='d-flex justify-content-center')  
-    div(class='col d-flex flex-column justify-content-center')  
+  div(class='d-flex justify-content-center background-color-blue')  
+    div(class='col d-flex flex-column justify-content-center ')  
+      p #[strong Whaddya buyin? Whaddya sellin?]
       p 
         a(href='/catalog/products') Products in the Store: !{data.item_count}
       p 

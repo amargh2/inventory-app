@@ -221,7 +221,7 @@ exports.createItemPOST = async function (req, res, next) {
   exports.deleteCategoryPOST = async function(req, res, next) {
     try {
       await Category.findByIdAndDelete(req.params.id);
-      const categories = await Category.find({});
+      const categories = await Category.find({}).sort({name:1});
       res.render('categories', {title:'Categories', categories_list:categories})
     } catch (error) {
       next(error)

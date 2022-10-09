@@ -7,9 +7,14 @@ require('dotenv').config()
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var catalogRouter = require('./routes/catalog')
+const compression = require("compression");
+const helmet = require("helmet");
+
+// Create the Express application object
 
 var app = express();
-
+app.use(compression())
+app.use(helmet());
 // Set up mongoose connection
 var mongoose = require('mongoose');
 var mongoDB = process.env.DB_STRING
