@@ -40,6 +40,9 @@ router.post('/categories/:id/delete', itemController.deleteCategoryPOST)
 router.get('/products/:id/update', itemController.updateItemGET)
 //POST update of item
 router.post('/products/:id/update', itemController.updateItemPOST)
-
+//GET update of category form
+router.get('/categories/:id/update', itemController.updateCategoryGET)
+//POST update of item
+router.post('/categories/:id/update', itemController.updateCategoryPOST)
 
 module.exports = router

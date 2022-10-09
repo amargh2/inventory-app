@@ -1,0 +1,24 @@
+extends layout 
+
+block content 
+  extends layout 
+
+block content 
+  p #[strong Name:] 
+    a(href=category.url) #{category.name}
+  p #[strong Description:] #{category.description}
+  ul 
+    each item in items 
+      a(href=item.url)  
+        li= item.name
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') Name:
+      input#name.form-control(type='text' value=(undefined === category ? '' : category.name) placeholder='Name of item' name='name' required='true' )
+    div.form-group
+      label(for='description') Item Description:
+      input#description.form-control(type='textarea' value=(undefined === category ? '' : category.description) placeholder='Description' name='description' required='true')
+    button.btn.btn-primary(type='submit') Submit
+    
+  if errors 
+    p Sorry, looks like one of the values you entered didn't make the cut. Make sure your numbers are numbers and your words are words. :)

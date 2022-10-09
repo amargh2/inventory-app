@@ -9,5 +9,13 @@ block content
       each item in items 
         li 
           a(href=item.url)=item.name
-  a(href=category.url + '/delete')
-    button.btn.btn-primary Delete This Category
+  div.d-flex 
+    div.p-1  
+      a(href=category.url + '/delete')
+        button.btn.btn-primary Delete This Category
+    div.p-1
+      a(href=category.url + '/update')
+        button.btn.btn-primary Update Category
+    div.p-1
+      a(href='/catalog/products/create')
+        button.btn.btn-primary Add an item to this category 

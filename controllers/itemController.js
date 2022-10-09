@@ -266,36 +266,53 @@ exports.createItemPOST = async function (req, res, next) {
           errors:errors,
         })
       }
+      }
+    
+    const category = await Category.find({name: req.body.category}, 'id')
+      var item = ({
+        name: req.body.name,
+        description: req.body.description,
+        price: parseInt(req.body.price),
+        number_in_stock: parseInt(req.body.number_in_stock),
+        category: category[0]
+      })
+    
+    try {
+      await Item.findByIdAndUpdate(req.params.id, item)
+      res.render('item_detail', {
+        item_details: await Item.findById(req.params.id)
+          .populate('category'),
+        title: 'Product Details'
+      }) 
+    } catch (err) {
+      res.render('item_update', {
+        title:'Update Item',
+        item:item,
+        errors:err,
+        categories: await Category.find({})
+      })    
     }
-  
-  const category = await Category.find({name: req.body.category}, 'id')
-    var item = ({
-      name: req.body.name,
-      description: req.body.description,
-      price: parseInt(req.body.price),
-      number_in_stock: parseInt(req.body.number_in_stock),
-      category: category[0]
-    })
-  
-  try {
-    await Item.findByIdAndUpdate(req.params.id, item)
-    res.render('item_detail', {
-      item_details: await Item.findById(req.params.id)
-    }) 
-  } catch (err) {
-    res.render('item_update', {
-      title:'Update Item',
-      item:item,
-      errors:err,
-      categories: await Category.find({})
-    })    
   }
-}
 
-  /*exports.updateItemPOST = async function (req, res, next) {
-    try    
-    { 
-      body("name", "Title must not be empty.")
+
+  exports.updateCategoryGET = async function(req, res, next) {
+    try {
+      const category = await Category.findById(req.params.id);
+      const items = await Item.find({category:req.params.id});
+      res.render('category_update', {
+      title: 'Update ' + category.name,
+      category:category,
+      items:items,
+      categories: await Category.find({})
+    })
+    } catch (err) {
+      next(err)
+    }
+
+  }
+
+  exports.updateCategoryPOST = async function (req, res, next) {
+    body("name", "Title must not be empty.")
       .trim()
       .isLength({ min: 1 })
       .escape(),
@@ -313,13 +330,13 @@ exports.createItemPOST = async function (req, res, next) {
     (req, res) => {
       const errors=validationResult(req)
       if (!errors.isEmpty()) {
-        res.render('edit_item', {
-          title:'Edit Item',
+        res.render('create_item', {
+          title:'Add an Item',
           errors:errors,
         })
       }
-    }
-
+      }
+    
     const category = await Category.find({name: req.body.category}, 'id')
       var item = ({
         name: req.body.name,
@@ -327,10 +344,20 @@ exports.createItemPOST = async function (req, res, next) {
         price: parseInt(req.body.price),
         number_in_stock: parseInt(req.body.number_in_stock),
         category: category[0]
-      })}
-      catch (error) {
-        next(error)
-      }
+      })
     
-    
-} */
+    try {
+      await Category.findByIdAndUpdate(req.params.id, item)
+      res.render('category_items_list', {
+        category: await Category.findById(req.params.id),
+        items: await Item.findById(req.params.id)
+      }) 
+    } catch (err) {
+      res.render('category_update', {
+        title:'Update Item',
+        items: await Item.find({category:req.params.id}),
+        errors:err,
+        categories: await Category.find({})
+      })    
+    }
+  }
