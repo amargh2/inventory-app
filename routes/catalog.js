@@ -28,35 +28,18 @@ router.get('/categories', itemController.listCategories)
 
 // GET list of items by category
 router.get('/categories/:id', itemController.categoryDetails)
-
+// GET delete item page
 router.get('/products/:id/delete', itemController.deleteItemGET)
-
+// POST delete item
 router.post('/products/:id/delete', itemController.deleteItemPOST)
-
-
+//GET category delete page
 router.get('/categories/:id/delete', itemController.deleteCategoryGET)
-
+//POST category delete
 router.post('/categories/:id/delete', itemController.deleteCategoryPOST)
-/*
-// POST request for creating Book.
-router.post("/book/create", book_controller.book_create_post);
+//GET update item page
+router.get('/products/:id/update', itemController.updateItemGET)
+//POST update of item
+router.post('/products/:id/update', itemController.updateItemPOST)
 
-// GET request to delete Book.
-router.get("/book/:id/delete", book_controller.book_delete_get);
-
-// POST request to delete Book.
-router.post("/book/:id/delete", book_controller.book_delete_post);
-
-// GET request to update Book.
-router.get("/book/:id/update", book_controller.book_update_get);
-
-// POST request to update Book.
-router.post("/book/:id/update", book_controller.book_update_post);
-
-// GET request for one Book.
-router.get("/book/:id", book_controller.book_detail);
-
-// GET request for list of all Book.
-router.get("/books", book_controller.book_list); */
 
 module.exports = router

@@ -1,9 +1,15 @@
 extends layout
 
 block content 
-  h1 !{item_details.name}
-  p=`${item_details.description}`
+  p #[strong Name:] 
+    a(href=item_details.url) #{item_details.name}
+  p #[strong Description:] #{item_details.description}
+  p #[strong Price:] #{item_details.price}
+  p #[strong Category:] 
+    a(href=item_details.category.url) #{item_details.category.name}
   div.d-flex.gap-2
     a(href=item_details.url + '/delete')
       button.btn.btn-primary Delete This Item
-    button.btn.btn-primary Edit This Item
+    a(href=item_details.url + '/update')
+      button.btn.btn-primary Edit This Item
+  

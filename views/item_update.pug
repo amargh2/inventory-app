@@ -1,0 +1,36 @@
+extends layout 
+
+block content 
+  p #[strong Name:] 
+    a(href=item.url) #{item.name}
+  p #[strong Description:] #{item.description}
+  p #[strong Price:] #{item.price}
+  p #[strong Category:] 
+    a(href=item.category.url) #{item.category.name}
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') Name:
+      input#name.form-control(type='text' value=(undefined === item ? '' : item.name) placeholder='Name of item' name='name' required='true' )
+    div.form-group
+      label(for='description') Item Description:
+      input#description.form-control(type='textarea' value=(undefined === item ? '' : item.description) placeholder='Description' name='description' required='true')
+    div.form-group
+      label(for='price') Item Price:
+      input#price.form-control(type='text', placeholder='Price' name='price' required='true' value=(undefined === item ? '' : item.price)) 
+    .form-group 
+      label(for ='category') Choose item category: 
+      select#category.form-control(type='select', placeHolder ='category', name ='category' value=(undefined === item ? '' : item.category.name))
+          each category in categories
+            option= category.name
+    .form-group 
+      label(for='number_in_stock') Quantity of item to add: 
+      select#number_in_stock.form-control(type='select', name='number_in_stock')
+        option 1
+        option 2 
+        option 3 
+        option 4
+        option 5
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors 
+    p Sorry, looks like one of the values you entered didn't make the cut. Make sure your numbers are numbers and your words are words. :)
