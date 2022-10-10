@@ -5,7 +5,7 @@ block content
     each item in item_list
       - var name = item.name 
       - var categoryurl = item.category.url
-        a(href=`${item.url}`)= `${item.name}`
+        a(href=`${item.url}`)= `${item.name}` 
         div(class='d-flex p-1')
           p= `${item.price} gold, Qty Available: ${item.number_in_stock}, `
-          a(href=categoryurl)=`${item.category.name}` 
+            a(href=categoryurl)=`${item.category.name}` 
