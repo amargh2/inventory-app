@@ -1,10 +1,16 @@
 extends layout
 
 block content
-  div(class='d-flex justify-content-center background-color-blue')  
-    div(class='col d-flex flex-column justify-content-center ')  
-      p #[strong Whaddya buyin? Whaddya sellin?]
-      p 
-        a(href='/catalog/products') Products in the Store: !{data.item_count}
-      p 
-        a(href='/catalog/categories') Categories: !{data.category_count}
+  div(class='container-lg row')  
+    div(class="card items-center col-md-6 pt-2")
+      img(src="/armor.jpg" class="card-img-top" style='height:30vh' alt="Suit of armor")
+      div(class="card-body")
+        h5(class="card-title") Products
+        p(class="card-text") View a list of all the items in the store.
+        a(href="/catalog/products" class="btn btn-primary") View !{data.item_count} Products
+    div(class="card items-center col-md-6 pt-2")
+      img(src="./potion-bottles.jpg" class="card-img-top" style='height:30vh' alt="Shelf with potion bottles.")
+      div(class="card-body")
+        h5(class="card-title") Categories
+        p(class="card-text") View a list of all the categories in the store.
+        a(href="/catalog/products" class="btn btn-primary") View !{data.category_count} Categories

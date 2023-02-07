@@ -8,7 +8,7 @@ router.get("/", itemController.index);
 //GET products list page
 router.get('/products', itemController.itemList)
 
-// GET request for creating a Book. NOTE This must come before routes that display Book (uses id).
+// GET request for item creation form.
 router.get("/products/create", itemController.createItemGET);
 
 //POST request to create an item
