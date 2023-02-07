@@ -27,7 +27,7 @@ exports.index = function (req, res) {
 };
 
 exports.itemList = function(req, res) {
-  Item.find({}, 'name price category number_in_stock', {'_id':false})
+  Item.find({}, 'name price category number_in_stock img_url', {'_id':false})
     .sort({name:1})
     .populate('category', 'name')  
     .exec(function (err, list_items) {

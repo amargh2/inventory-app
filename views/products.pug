@@ -1,11 +1,14 @@
 extends layout
 
 block content
-  div(class='d-flex flex-column justify-content-center') 
-    each item in item_list
-      - var name = item.name 
-      - var categoryurl = item.category.url
-        a(href=`${item.url}`)= `${item.name}` 
-        div(class='d-flex p-1')
-          p= `${item.price} gold, Qty Available: ${item.number_in_stock}, `
-            a(href=categoryurl)=`${item.category.name}` 
+  div(class='container-lg row')  
+        each item in item_list
+          - var name = item.name 
+          - var categoryurl = item.category.url
+          - var img_url = item.img_url
+            div(class="card col-sm-6 pt-2")
+              img(src=`${item.img_url}` class="card-img-top" style='height:30vh' alt="Shelf with potion bottles.")
+              div(class="card-body")
+                h5(class="card-title") !{item.name}
+                p(class="card-text") !{item.price} gold. !{item.number_in_stock} in stock.
+                a(href=item.url class="btn btn-primary") View !{item.name}
