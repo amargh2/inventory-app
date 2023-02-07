@@ -7,7 +7,8 @@ const ItemSchema = new Schema ({
   price: {type: Number, min: .01},
   description: String,
   number_in_stock: Number,
-  category: {type: Schema.Types.ObjectId, ref:'Category'}
+  category: {type: Schema.Types.ObjectId, ref:'Category'},
+  img_url:String,
 })
 
 ItemSchema
