@@ -17,14 +17,13 @@ var Category = require('./models/category')
 
 
 var mongoose = require('mongoose');
-mongoose.connect(process.env.DB_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.DEV_DB_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //const updateItem = async () => await Item.findOneAndUpdate({name:'Focus Poultice'}, {img_url: '/Blue_Potion_Bottle.JPG'})
-const checkItem = async () => console.log(await Item.findOne({name:'Focus Poultice'}))
-checkItem()
-console.log('all done')
+const clearDatabase = async () => await Item.remove({}, console.log('all items deleted'))
+const clearCategories = async () => await Category.deleteMany({}, console.log('all categories deleted'))
 
-/*
+
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -46,8 +45,8 @@ function categoryCreate(name, description, cb) {
   }   );
 }
 
-function itemCreate(name, price, description, number_in_stock, category, cb) {
-  itemdetail = {name:name, price:price, description:description, number_in_stock:number_in_stock}
+function itemCreate(name, price, description, number_in_stock, img_url, category, cb) {
+  itemdetail = {name:name, price:price, description:description, number_in_stock:number_in_stock, img_url:img_url}
   if (category != false) itemdetail.category = category
   var item = new Item(itemdetail);
        
@@ -89,32 +88,36 @@ function createCategories(cb) {
 function createItems(cb) {
     async.parallel([
         function(callback) {
-          itemCreate('Health Potion', 20, 'This potion is made with herbs and healing waters from a mountain spring and was blessed by a wizard so you know it is good.', 10, categories[0], callback);
+          itemCreate('Health Potion', 20, 'This potion is made with herbs and healing waters from a mountain spring and was blessed by a wizard so you know it is good.', 10, '/red_potion_bottle.jpg', categories[0], callback);
         },
         function(callback) {
-          itemCreate('Focus Poultice', 30, "You might think it's hocus pocus, but this focus poultice does the mostest.", 5, categories[0], callback);
+          itemCreate('Focus Poultice', 30, "You might think it's hocus pocus, but this focus poultice does the mostest.", 5, '/Blue_Potion_Bottle.JPG', categories[0], callback);
         },
         function(callback) {
-          itemCreate('Humble Sword', 100, "If you are in a cave and happen upon a kobold, you'll be glad you bought this.", 3, categories[1], callback);
+          itemCreate('Humble Sword', 100, "If you are in a cave and happen upon a kobold, you'll be glad you bought this.", 3, '/humble_sword.jpg', categories[1], callback);
         },
         function(callback) {
-          itemCreate("Leather Armor", 150, "It might protect you, possibly. We hope. You'll definitely look cool though. Guaranteed.", 2, categories[2], callback);
+          itemCreate('Wizard Staff', 100, "An ornate staff crafted by a hermit in a mountain cave.", 1, '/wizard_staff.jpg', categories[1], callback);
         },
         function(callback) {
-          itemCreate("Wizard Regalia", 200, "Put on your robe and wizard hat. It's magical so it costs more.", 1, categories[2], callback);
+          itemCreate("Leather Armor", 150, "It might protect you, possibly. We hope. You'll definitely look cool though. Guaranteed.", 2, '/leather_armor.jpg', categories[2], callback);
         },
         function(callback) {
-          itemCreate("Steel Armor", 300, "Are you a bad enough dude to wear this armor all day?", 1, categories[2], callback);
+          itemCreate("Wizard Regalia", 200, "Magical robes? A fashion statement? Whatever you want.", 1, '/wizard_robes.jpg', categories[2], callback);
         },
         function(callback) {
-          itemCreate("Ominous Floating, Humming Orb", 500, "What is it? Why is it here? What does it want?", 1, categories[3], callback);
+          itemCreate("Steel Armor", 300, "Are you a bad enough dude to wear this armor all day?", 1, '/steel_armor.jpg', categories[2], callback);
+        },
+        function(callback) {
+          itemCreate("Crystal Ball", 500, "If you look really hard, you might see.. something.", 1, '/crystal_ball.jpg', categories[3], callback);
         }
         ],
         // optional callback
         cb);
 }
 
-
+//clearDatabase()
+//clearCategories()
 
 async.series([
   createCategories,  
@@ -129,5 +132,4 @@ function(err, results) {
     mongoose.connection.close();
 });
 
-*/
 

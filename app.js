@@ -17,7 +17,7 @@ app.use(compression())
 app.use(helmet());
 // Set up mongoose connection
 var mongoose = require('mongoose');
-var mongoDB = process.env.DB_STRING
+var mongoDB = process.env.DEV_DB_STRING
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
