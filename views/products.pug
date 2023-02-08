@@ -1,12 +1,12 @@
 extends layout
 
 block content
-  div(class='container-lg row')  
+  div(class='d-flex m-3 row md:cols-12 md:m-0')  
         each item in item_list
           - var name = item.name 
           - var categoryurl = item.category.url
           - var img_url = item.img_url
-            div(class="card col-sm-3 pt-2")
+            div(class="card col-sm-2 pt-2 m-1")
               img(src=`${item.img_url}` class="card-img-top" style='height:30vh' alt="Shelf with potion bottles.")
               div(class="card-body")
                 h5(class="card-title") !{item.name}

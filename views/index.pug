@@ -2,13 +2,13 @@ extends layout
 
 block content
   div(class='container-lg row')  
-    div(class="card items-center col-md-6 pt-2")
+    div(class="card items-center col-sm-5 pt-1 m-1")
       img(src="/armor.jpg" class="card-img-top" style='height:30vh' alt="Suit of armor")
       div(class="card-body")
         h5(class="card-title") Products
         p(class="card-text") View a list of all the items in the store.
         a(href="/catalog/products" class="btn btn-primary") View !{data.item_count} Products
-    div(class="card items-center col-md-6 pt-2")
+    div(class="card items-center col-sm-5 pt-1 m-1")
       img(src="./potion-bottles.jpg" class="card-img-top" style='height:30vh' alt="Shelf with potion bottles.")
       div(class="card-body")
         h5(class="card-title") Categories

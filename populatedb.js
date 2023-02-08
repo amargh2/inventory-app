@@ -100,7 +100,7 @@ function createItems(cb) {
           itemCreate('Wizard Staff', 100, "An ornate staff crafted by a hermit in a mountain cave.", 1, '/wizard_staff.jpg', categories[1], callback);
         },
         function(callback) {
-          itemCreate("Leather Armor", 150, "It might protect you, possibly. We hope. You'll definitely look cool though. Guaranteed.", 2, '/leather_armor.jpg', categories[2], callback);
+          itemCreate("Leather Armor", 150, "It might protect you, possibly. We hope. You'll definitely look cool, and that we can guaranteed.", 2, '/leather_armor.jpg', categories[2], callback);
         },
         function(callback) {
           itemCreate("Wizard Regalia", 200, "Magical robes? A fashion statement? Whatever you want.", 1, '/wizard_robes.jpg', categories[2], callback);
@@ -116,8 +116,8 @@ function createItems(cb) {
         cb);
 }
 
-//clearDatabase()
-//clearCategories()
+clearDatabase()
+clearCategories()
 
 async.series([
   createCategories,  

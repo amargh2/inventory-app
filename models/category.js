@@ -5,6 +5,7 @@ const CategorySchema = new Schema(
   {
     name: String,
     description: String,
+    img_url: String
   }  
 )
 
