@@ -17,7 +17,7 @@ var Category = require('./models/category')
 
 
 var mongoose = require('mongoose');
-mongoose.connect(process.env.DEV_DB_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.DB_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //const updateItem = async () => await Item.findOneAndUpdate({name:'Focus Poultice'}, {img_url: '/Blue_Potion_Bottle.JPG'})
 const clearDatabase = async () => await Item.remove({}, console.log('all items deleted'))
@@ -103,7 +103,7 @@ function createItems(cb) {
           itemCreate("Leather Armor", 150, "It might protect you, possibly. We hope. You'll definitely look cool, and that we can guaranteed.", 2, '/leather_armor.jpg', categories[2], callback);
         },
         function(callback) {
-          itemCreate("Wizard Regalia", 200, "Magical robes? A fashion statement? Whatever you want.", 1, '/wizard_robes.jpg', categories[2], callback);
+          itemCreate("Wizard Regalia", 200, "Magical robes? A fashion statement? Whatever you want.", 1, '/wizard_robes.png', categories[2], callback);
         },
         function(callback) {
           itemCreate("Steel Armor", 300, "Are you a bad enough dude to wear this armor all day?", 1, '/steel_armor.jpg', categories[2], callback);
@@ -116,8 +116,8 @@ function createItems(cb) {
         cb);
 }
 
-clearDatabase()
-clearCategories()
+//clearDatabase()
+//clearCategories()
 
 async.series([
   createCategories,  
@@ -131,5 +131,4 @@ function(err, results) {
     // All done, disconnect from database
     mongoose.connection.close();
 });
-
 
