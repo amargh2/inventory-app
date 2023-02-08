@@ -6,8 +6,8 @@ block content
           - var name = item.name 
           - var categoryurl = item.category.url
           - var img_url = item.img_url
-            div(class="card col-lg-3 col-md-5 d-flex pt-2 m-1")
-              img(src=`${item.img_url}` class="card-img-top" style='height:30vh' alt="Shelf with potion bottles.")
+            div(class="card col-lg-2 col-md-5 d-flex pt-2 m-1")
+              img(src=`${item.img_url}` class="card-img-top" style='height:20vh' alt="Shelf with potion bottles.")
               div(class="card-body")
                 h5(class="card-title") !{item.name}
                 p(class="card-text") !{item.price} gold. !{item.number_in_stock} in stock.
