@@ -41,5 +41,18 @@ html
                   div(class='d-flex')
                     i(class="bi bi-folder-plus")
                     p Add a category
+              if currentUser
+                div(class='p-1 d-flex' style='font-size:1.2rem')
+                  form(action='/logout' method='post')
+                    button(class='d-flex btn btn-outline-primary' type='submit')
+                      i(class="bi bi-box-arrow-right")
+                      p Log out
+              else
+                div(class='d-flex' style='font-size:1.2rem')
+                  a(href='/login')
+                    button(class='d-flex btn btn-outline-primary' type='submit')
+                      i(class="bi bi-box-arrow-right")
+                      p Log in
+                
         div(class='col-10')
           block content

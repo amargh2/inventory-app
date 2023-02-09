@@ -12,11 +12,21 @@ const helmet = require("helmet");
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const User = require('./models/user')
+const bodyParser = require('body-parser')
+const session = require('express-session')
+const bcrypt = require('bcrypt')
 // Create the Express application object
 
-var app = express();
-app.use(compression())
+
+app = express();
+
 app.use(helmet());
+app.use(logger('dev'))
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+})); 
 // Set up mongoose connection
 var mongoose = require('mongoose');
 var mongoDB = process.env.DB_STRING
@@ -24,7 +34,6 @@ mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
 //adding passport for local auth when editing or deleting items
 passport.use(
   new LocalStrategy((username, password, done) => {
@@ -47,6 +56,9 @@ passport.use(
   })
 )
 
+app.use(passport.authenticate('session'))
+
+bodyParser.urlencoded({extended:false})
 // session based auth, so serialize the user session server side
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -58,6 +70,9 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -66,8 +81,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(function(req, res, next) {
+  res.locals.currentUser = req.user;
+  next();
+});
+//Compression of routes
+app.use(compression())
 
-
+// ** ROUTES BEGIN HERE **
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/catalog', catalogRouter)

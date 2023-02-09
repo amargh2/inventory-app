@@ -10,12 +10,16 @@ block content
         li 
           a(href=item.url)=item.name
   div.d-flex 
-    div.p-1  
-      a(href=category.url + '/delete')
-        button.btn.btn-primary Delete This Category
-    div.p-1
-      a(href=category.url + '/update')
-        button.btn.btn-primary Update Category
+    if currentUser !== undefined
+      div.p-1  
+        a(href=category.url + '/delete')
+          button.btn.btn-primary Delete This Category
+      div.p-1
+        a(href=category.url + '/update')
+          button.btn.btn-primary Update Category
+    else
+      div.p-1
+        a(href='/login') Log in to your account to edit or delete this category.
     div.p-1
       a(href='/catalog/products/create')
         button.btn.btn-primary Add an item to this category 

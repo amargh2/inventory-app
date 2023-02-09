@@ -8,11 +8,14 @@ block content
   p #[strong Category:] 
     a(href=item_details.category.url) #{item_details.category.name}
   p #[strong Amount in stock:] #{item_details.number_in_stock} 
-  div.d-flex.gap-2
-    div.p-1
-      a(href=item_details.url + '/delete')
-        button.btn.btn-primary Delete This Item
-    div.p-1
-      a(href=item_details.url + '/update')
-        button.btn.btn-primary Edit This Item
-  
+  if currentUser !== undefined  
+    div.d-flex.gap-2
+      div.p-1
+        a(href=item_details.url + '/delete')
+          button.btn.btn-primary Delete This Item
+      div.p-1
+        a(href=item_details.url + '/update')
+          button.btn.btn-primary Edit This Item
+  else 
+    div.d-flex
+      a(href='/login') Log in to your admin account to edit or delete this item.
